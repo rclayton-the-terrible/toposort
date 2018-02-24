@@ -1,3 +1,5 @@
+const CyclicDependencyError = require('./errors/cyclic-dependency');
+const UnknownNodeError = require('./errors/unknown-node');
 
 /**
  * Topological sorting function
@@ -29,11 +31,11 @@ function toposort(nodes, edges) {
 
   function visit(node, i, predecessors) {
     if(predecessors.has(node)) {
-      throw new Error('Cyclic dependency: '+JSON.stringify(node))
+      throw new CyclicDependencyError(node);
     }
 
     if (!nodesHash.has(node)) {
-      throw new Error('Found unknown node. Make sure to provided all involved nodes. Unknown node: '+JSON.stringify(node))
+      throw new UnknownNodeError(node);
     }
 
     if (visited[i]) return;
